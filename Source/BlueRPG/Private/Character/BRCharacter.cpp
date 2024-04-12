@@ -4,7 +4,9 @@
 #include "Character/BRCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/BRPlayerController.h"
 #include "Player/BRPlayerState.h"
+#include "UI/HUD/BRHUD.h"
 
 ABRCharacter::ABRCharacter()
 {
@@ -43,4 +45,12 @@ void ABRCharacter::InitAbilityActorInfo()
 	BRPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(BRPlayerState, this);
 	AbilitySystemComponent = BRPlayerState->GetAbilitySystemComponent();
 	AttributeSet = BRPlayerState->GetAttributeSet();
+
+	if (ABRPlayerController* BRPlayerController = Cast<ABRPlayerController>(GetController()))
+	{
+		if (ABRHUD* BRHUD = Cast<ABRHUD>(BRPlayerController->GetHUD()))
+		{
+			BRHUD->InitOverlay(BRPlayerController, BRPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }

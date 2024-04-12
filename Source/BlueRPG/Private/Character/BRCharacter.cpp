@@ -2,8 +2,9 @@
 
 
 #include "Character/BRCharacter.h"
-
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/BRPlayerState.h"
 
 ABRCharacter::ABRCharacter()
 {
@@ -15,4 +16,31 @@ ABRCharacter::ABRCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+}
+
+void ABRCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	InitAbilityActorInfo();
+	//InitAbilityActorInfo();
+}
+
+void ABRCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	// Init ability actor info for the client
+	InitAbilityActorInfo();
+}
+
+void ABRCharacter::InitAbilityActorInfo()
+{
+	/* Init ability actor info for the Server
+	 * to access the player state
+	 */
+	ABRPlayerState* BRPlayerState = GetPlayerState<ABRPlayerState>();
+	check(BRPlayerState);
+	BRPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(BRPlayerState, this);
+	AbilitySystemComponent = BRPlayerState->GetAbilitySystemComponent();
+	AttributeSet = BRPlayerState->GetAttributeSet();
 }

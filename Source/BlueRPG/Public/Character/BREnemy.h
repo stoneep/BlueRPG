@@ -17,8 +17,12 @@ class BLUERPG_API ABREnemy : public ABRCharacterBase, public IEnemyInterface
 
 public:
 	ABREnemy();
+
+	/**Enemy Interface */
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	/**Enemy Interface */
 
-	
+protected:
+	virtual void BeginPlay() override;
 };

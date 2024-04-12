@@ -16,4 +16,10 @@ class BLUERPG_API ABRCharacter : public ABRCharacterBase
 
 public:
 	ABRCharacter();
+	//~ Begin AActor Interface.
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
+
+private:
+	void InitAbilityActorInfo();
 };

@@ -14,6 +14,11 @@ ABRCharacterBase::ABRCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+UAbilitySystemComponent* ABRCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 
 void ABRCharacterBase::BeginPlay()
 {

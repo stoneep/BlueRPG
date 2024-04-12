@@ -11,6 +11,8 @@ UOverlayWidgetController* ABRHUD::GetOverlayWidgetController(const FWidgetContro
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
+		OverlayWidgetController->BindCallbacksToDependencies();
+		//take overlay widget controller & call bind callbacks to dependencies here!
 		return OverlayWidgetController;
 	}
 	return OverlayWidgetController;

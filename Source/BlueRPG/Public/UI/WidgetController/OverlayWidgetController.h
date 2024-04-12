@@ -19,10 +19,15 @@ class BLUERPG_API UOverlayWidgetController : public UBRWidgetController
 
 public:
 	virtual void BroadcastInitialValues() override;
-
+	virtual void BindCallbacksToDependencies() override;
+	
 	UPROPERTY(BlueprintAssignable, Category="BR|Attributes")
 	FOnHealtChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="BR|Attributes")
 	FOnMaxHealtChangedSignature OnMaxHealthChanged;
+
+protected:
+	void HealthChanged(const FOnAttributeChangeData& Data) const;
+	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 };

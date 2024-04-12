@@ -15,3 +15,7 @@ void UBRWidgetController::SetWidgetControllerParams(const FWidgetControllerParam
 void UBRWidgetController::BroadcastInitialValues()
 {
 }
+
+void UBRWidgetController::BindCallbacksToDependencies()
+{
+}

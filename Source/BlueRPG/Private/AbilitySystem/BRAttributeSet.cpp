@@ -6,7 +6,7 @@
 
 UBRAttributeSet::UBRAttributeSet()
 {
-	InitHealth(100.f);
+	InitHealth(10.f);
 	InitMaxHealth(100.f);
 }
 

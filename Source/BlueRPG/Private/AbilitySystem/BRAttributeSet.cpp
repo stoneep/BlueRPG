@@ -2,6 +2,10 @@
 
 
 #include "AbilitySystem/BRAttributeSet.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameFramework/Character.h"
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 UBRAttributeSet::UBRAttributeSet()
@@ -21,6 +25,66 @@ void UBRAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	// OnChanged - If you set the value of health on the server and that value hasn't changed, then there will be no rep.
 }
 
+void UBRAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+	//only use this function to do clamping.
+	if (Attribute == GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+	}
+}
+
+void UBRAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
+{
+	// if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("Health from GetHeath(): %f"), GetHealth());
+	// 	UE_LOG(LogTemp, Warning, TEXT("Magnitude: %f"), Data.EvaluatedData.Magnitude);
+	// }
+
+	// Source = causer of the effect, Target = target of the effect (owner of this AS)
+
+	Props.EffectContextHandle = Data.EffectSpec.GetContext();
+	Props.SourceASC = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+
+	if (IsValid(Props.SourceASC) && Props.SourceASC->AbilityActorInfo.IsValid() && Props.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
+	{
+		Props.SourceAvatarActor = Props.SourceASC->AbilityActorInfo->AvatarActor.Get();
+		Props.SourceController = Props.SourceASC->AbilityActorInfo->PlayerController.Get();
+		if (Props.SourceController == nullptr && Props.SourceAvatarActor != nullptr)
+		{
+			if (const APawn* Pawn = Cast<APawn>(Props.SourceAvatarActor))
+			{
+				Props.SourceController = Pawn->GetController();
+			}
+		}
+		if (Props.SourceController)
+		{
+			ACharacter* SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+		}
+	}
+
+	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
+	{
+		Props.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+		Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+		Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
+		Props.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
+	}
+}
+
+void UBRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	FEffectProperties Props;
+	SetEffectProperties(Data, Props);
+
+}
+
+
 void UBRAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Health, OldHealth);
@@ -30,3 +94,5 @@ void UBRAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Health, OldMaxHealth);
 }
+
+

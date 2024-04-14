@@ -25,3 +25,7 @@ void ABRCharacterBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+void ABRCharacterBase::InitAbilityActorInfo()
+{
+}

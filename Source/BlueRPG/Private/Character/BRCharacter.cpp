@@ -3,6 +3,7 @@
 
 #include "Character/BRCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/BRAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/BRPlayerController.h"
 #include "Player/BRPlayerState.h"
@@ -42,6 +43,7 @@ void ABRCharacter::InitAbilityActorInfo()
 	ABRPlayerState* BRPlayerState = GetPlayerState<ABRPlayerState>();
 	check(BRPlayerState);
 	BRPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(BRPlayerState, this);
+	Cast<UBRAbilitySystemComponent>(BRPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	AbilitySystemComponent = BRPlayerState->GetAbilitySystemComponent();
 	AttributeSet = BRPlayerState->GetAttributeSet();
 

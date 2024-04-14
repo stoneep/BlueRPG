@@ -33,7 +33,13 @@ void ABREnemy::UnHighlightActor()
 void ABREnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilityActorInfo();
+}
+
+void ABREnemy::InitAbilityActorInfo()
+{
 	//check(AbilitySystemComponent)' -> NULL
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	//Initializing that in the constructor->BREnemy
+	Cast<UBRAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
 }

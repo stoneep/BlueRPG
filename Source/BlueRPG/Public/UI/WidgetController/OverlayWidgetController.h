@@ -6,10 +6,6 @@
 #include "UI/WidgetController/BRWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-class UBRUserWidget;
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealtChangedSignature, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealtChangedSignature, float, NewMaxHealth);
 
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
@@ -23,11 +19,18 @@ struct FUIWidgetRow : public FTableRowBase
 	FText Message = FText();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UBRUserWidget> MessageWidget;
+	TSubclassOf<class UBRUserWidget> MessageWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
+
+class UBRUserWidget;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealtChangedSignature, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealtChangedSignature, float, NewMaxHealth);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
 /**
  * 
@@ -47,6 +50,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="BR|Attributes")
 	FOnMaxHealtChangedSignature OnMaxHealthChanged;
 
+	UPROPERTY(BlueprintAssignable, Category="BR|Messages")
+	FMessageWidgetRowSignature MessageWidgetRowDelegate;
+	
+	
 protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")

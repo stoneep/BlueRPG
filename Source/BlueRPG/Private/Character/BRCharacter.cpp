@@ -35,6 +35,14 @@ void ABRCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 ABRCharacter::GetPlayerLevel()
+{
+	const ABRPlayerState* BRPlayerState = GetPlayerState<ABRPlayerState>();
+	check(BRPlayerState);
+	return BRPlayerState->GetPlayerLevel();
+}
+
+
 void ABRCharacter::InitAbilityActorInfo()
 {
 	/* Init ability actor info for the Server

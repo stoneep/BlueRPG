@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/BRAbilitySystemComponent.h"
 #include "AbilitySystem/BRAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 ABRPlayerState::ABRPlayerState()
 {
@@ -17,7 +18,19 @@ ABRPlayerState::ABRPlayerState()
 	NetUpdateFrequency = 100.f;
 }
 
+void ABRPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ABRPlayerState, Level);
+}
+
 UAbilitySystemComponent* ABRPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
+}
+
+void ABRPlayerState::OnRep_Level(int32 OldLevel)
+{
+	
 }

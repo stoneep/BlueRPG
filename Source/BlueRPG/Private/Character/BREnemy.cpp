@@ -30,6 +30,11 @@ void ABREnemy::UnHighlightActor()
 	GetMesh()->SetRenderCustomDepth(false);
 }
 
+int32 ABREnemy::GetPlayerLevel()
+{
+	return Level;
+}
+
 void ABREnemy::BeginPlay()
 {
 	Super::BeginPlay();

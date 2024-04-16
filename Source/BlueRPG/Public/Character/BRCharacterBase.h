@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "BRCharacterBase.generated.h"
 
 class UAbilitySystemComponent;
@@ -12,7 +13,7 @@ class UAttributeSet;
 class UGameplayEffect;
 
 UCLASS(Abstract)
-class BLUERPG_API ABRCharacterBase : public ACharacter, public IAbilitySystemInterface
+class BLUERPG_API ABRCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 

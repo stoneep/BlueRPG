@@ -10,8 +10,8 @@
 
 UBRAttributeSet::UBRAttributeSet()
 {
-	InitHealth(10.f);
-	InitMana(10.f);
+	// InitHealth(10.f);
+	// InitMana(10.f);
 }
 
 void UBRAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

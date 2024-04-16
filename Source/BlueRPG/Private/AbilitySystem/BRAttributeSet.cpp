@@ -11,20 +11,34 @@
 UBRAttributeSet::UBRAttributeSet()
 {
 	InitHealth(10.f);
-	InitMaxHealth(100.f);
+	InitMana(10.f);
 }
 
 void UBRAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	//Primary
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
-	
-	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Health, COND_None, REPNOTIFY_Always);
+
+	//Secondary
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, CriticalHitResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	
+	//Vital
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 
 	// Always - If the value is set on the server, rep it and on the client
 	// OnChanged - If you set the value of health on the server and that value hasn't changed, then there will be no rep.
@@ -38,6 +52,10 @@ void UBRAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 	if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+	}
+	if (Attribute == GetManaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
 	}
 }
 
@@ -91,6 +109,10 @@ void UBRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 	}
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 }
 
 
@@ -99,9 +121,9 @@ void UBRAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) cons
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Health, OldHealth);
 }
 
-void UBRAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
+void UBRAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, MaxHealth, OldMaxHealth);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Mana, OldMana);
 }
 
 void UBRAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
@@ -124,4 +146,52 @@ void UBRAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Vigor, OldVigor);
 }
 
+void UBRAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldArmor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Armor, OldArmor);
+}
 
+void UBRAttributeSet::OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, ArmorPenetration, OldArmorPenetration);
+}
+
+void UBRAttributeSet::OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, BlockChance, OldBlockChance);
+}
+
+void UBRAttributeSet::OnRep_CriticalHitChance(const FGameplayAttributeData& OldCriticalHitChance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, CriticalHitChance, OldCriticalHitChance);
+}
+
+void UBRAttributeSet::OnRep_CriticalHitDamage(const FGameplayAttributeData& OldCriticalHitDamage) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, CriticalHitDamage, OldCriticalHitDamage);
+}
+
+void UBRAttributeSet::OnRep_CriticalHitResistance(const FGameplayAttributeData& OldCriticalHitResistance) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, CriticalHitResistance, OldCriticalHitResistance);
+}
+
+void UBRAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldHealthRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, HealthRegeneration, OldHealthRegeneration);
+}
+
+void UBRAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldManaRegeneration) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, ManaRegeneration, OldManaRegeneration);
+}
+
+void UBRAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, MaxHealth, OldMaxHealth);
+}
+
+void UBRAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, MaxMana, OldMaxMana);
+}

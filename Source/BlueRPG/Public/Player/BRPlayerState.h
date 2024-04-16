@@ -27,4 +27,8 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+private:
+	UPROPERTY(VisibleAnywhere)
+	int32 Level = 1;
+	
 };

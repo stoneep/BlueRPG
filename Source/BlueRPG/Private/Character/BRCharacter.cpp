@@ -54,5 +54,5 @@ void ABRCharacter::InitAbilityActorInfo()
 			BRHUD->InitOverlay(BRPlayerController, BRPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 }

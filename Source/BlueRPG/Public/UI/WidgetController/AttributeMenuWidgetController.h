@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class BLUERPG_API UAttributeMenuWidgetController : public UBRWidgetController
 {
 	GENERATED_BODY()

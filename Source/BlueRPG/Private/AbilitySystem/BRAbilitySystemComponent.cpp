@@ -8,11 +8,11 @@
 void UBRAbilitySystemComponent::AbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UBRAbilitySystemComponent::EffectApplied);
-
-	const FBRGameplayTags& GameplayTags = FBRGameplayTags::Get();
+	
+	//const FBRGameplayTags& GameplayTags = FBRGameplayTags::Get();
 	//GameplayTags.Attributes_Secondary_Armor.ToString()
 
-	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attributes_Secondary_Armor.ToString()));
+	//GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attributes_Secondary_Armor.ToString()));
 }
 
 void UBRAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,

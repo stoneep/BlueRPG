@@ -7,6 +7,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "BRHUD.generated.h"
 
+class UAttributeMenuWidgetController;
 class UAttributeSet;
 class UAbilitySystemComponent;
 class UOverlayWidgetController;
@@ -45,6 +46,6 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
-	
+
 };
 

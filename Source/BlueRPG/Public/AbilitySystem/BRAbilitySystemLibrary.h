@@ -7,6 +7,7 @@
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "BRAbilitySystemLibrary.generated.h"
 
+class UAttributeMenuWidgetController;
 class UOverlayWidgetController;
 
 /**

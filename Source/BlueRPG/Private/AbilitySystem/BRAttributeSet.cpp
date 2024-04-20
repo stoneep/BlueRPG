@@ -40,6 +40,11 @@ void UBRAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 
+	//Etc
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, APpoint, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Credit, COND_None, REPNOTIFY_Always);
+	
+
 	// Always - If the value is set on the server, rep it and on the client
 	// OnChanged - If you set the value of health on the server and that value hasn't changed, then there will be no rep.
 }
@@ -194,4 +199,14 @@ void UBRAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth
 void UBRAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, MaxMana, OldMaxMana);
+}
+
+void UBRAttributeSet::OnRep_APpoint(const FGameplayAttributeData& OldAPpoint) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, APpoint, OldAPpoint);
+}
+
+void UBRAttributeSet::OnRep_Credit(const FGameplayAttributeData& OldCredit) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Credit, OldCredit);
 }

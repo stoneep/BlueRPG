@@ -16,10 +16,12 @@ UCLASS()
 class BLUERPG_API UBRAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+	
 public:
 	void AbilityActorInfoSet();
 
 	FEffectAssetTags EffectAssetTags;
+	
 protected:
 	void EffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 };

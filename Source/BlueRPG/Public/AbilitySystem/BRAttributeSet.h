@@ -138,6 +138,19 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UBRAttributeSet, Mana);
+
+	
+	/*
+	 *Etc Attributes
+	 */
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Etc Attributes")
+	FGameplayAttributeData APpoint;
+	ATTRIBUTE_ACCESSORS(UBRAttributeSet, APpoint);
+
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Etc Attributes")
+	FGameplayAttributeData Credit;
+	ATTRIBUTE_ACCESSORS(UBRAttributeSet, Credit);
 	
 	
 	UFUNCTION()
@@ -191,6 +204,15 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+
+/*
+ *
+ */
+	UFUNCTION()
+	void OnRep_APpoint(const FGameplayAttributeData& OldAPpoint) const;
+
+	UFUNCTION()
+	void OnRep_Credit(const FGameplayAttributeData& OldCredit) const;
 	
 private:
 	

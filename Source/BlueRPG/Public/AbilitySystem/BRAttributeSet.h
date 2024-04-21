@@ -48,6 +48,8 @@ struct FEffectProperties
 	
 };
 
+template<class T>
+using TStaticFunctionPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 
 /**
  * 
@@ -62,9 +64,10 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	TMap<FGameplayTag, FGameplayAttribute(*)()> TagsToAttributes;
+	
 	/*
 	 * Primary Attributes
 	 */
@@ -144,14 +147,15 @@ public:
 	 *Etc Attributes
 	 */
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Etc Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_APpoint, Category = "Etc Attributes")
 	FGameplayAttributeData APpoint;
 	ATTRIBUTE_ACCESSORS(UBRAttributeSet, APpoint);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Etc Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Credit, Category = "Etc Attributes")
 	FGameplayAttributeData Credit;
 	ATTRIBUTE_ACCESSORS(UBRAttributeSet, Credit);
-	
+
+	//New Status
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
@@ -213,6 +217,7 @@ public:
 
 	UFUNCTION()
 	void OnRep_Credit(const FGameplayAttributeData& OldCredit) const;
+	//New Status
 	
 private:
 	

@@ -31,7 +31,7 @@ void FBRGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Primary.Vigor"),
 		FString("Increases Health")
 		);
-
+	
 	/*
 	 * Secondary Attributes
 	 */
@@ -87,4 +87,18 @@ void FBRGameplayTags::InitializeNativeGameplayTags()
 		);
 
 
+	/*
+	 *Etc Attributes
+	 */
+
+	GameplayTags.Attributes_Etc_Credit = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Etc.Credit"),
+		FString(".")
+		);
+	
+	GameplayTags.Attributes_Etc_APpoint = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Etc.APpoint"),
+			FString(".")
+			);
+	//New Status
 }

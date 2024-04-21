@@ -4,14 +4,25 @@
 #include "AbilitySystem/BRAttributeSet.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "BRGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 UBRAttributeSet::UBRAttributeSet()
 {
-	// InitHealth(10.f);
-	// InitMana(10.f);
+	const FBRGameplayTags& GameplayTags = FBRGameplayTags::Get();
+	
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength, GetStrengthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence, GetIntelligenceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Resilience, GetResilienceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Vigor, GetVigorAttribute);
+	//New Status
+
+	TagsToAttributes.Add(GameplayTags.Attributes_Etc_Credit, GetCreditAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Etc_APpoint, GetCreditAttribute);
+	
+
 }
 
 void UBRAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -43,7 +54,7 @@ void UBRAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	//Etc
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, APpoint, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UBRAttributeSet, Credit, COND_None, REPNOTIFY_Always);
-	
+	//New Status
 
 	// Always - If the value is set on the server, rep it and on the client
 	// OnChanged - If you set the value of health on the server and that value hasn't changed, then there will be no rep.
@@ -201,6 +212,10 @@ void UBRAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) co
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, MaxMana, OldMaxMana);
 }
 
+/*
+ *
+ */
+
 void UBRAttributeSet::OnRep_APpoint(const FGameplayAttributeData& OldAPpoint) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, APpoint, OldAPpoint);
@@ -210,3 +225,4 @@ void UBRAttributeSet::OnRep_Credit(const FGameplayAttributeData& OldCredit) cons
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UBRAttributeSet, Credit, OldCredit);
 }
+//New Status

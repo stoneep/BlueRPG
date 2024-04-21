@@ -4,6 +4,7 @@
 #include "Character/BRCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/BRAbilitySystemComponent.h"
 
 
 ABRCharacterBase::ABRCharacterBase()
@@ -47,6 +48,14 @@ void ABRCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
+}
+
+void ABRCharacterBase::AddCharacterAbilities()
+{
+	UBRAbilitySystemComponent* BRASC = CastChecked<UBRAbilitySystemComponent>(AbilitySystemComponent);
+	if (!HasAuthority()) return;
+
+	BRASC->AddCharacterAbilities(StartupAbilities);
 }
 
 // void ABRCharacterBase::InitializePrimaryAttributes() const

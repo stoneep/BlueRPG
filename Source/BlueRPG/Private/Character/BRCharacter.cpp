@@ -26,6 +26,7 @@ void ABRCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 void ABRCharacter::OnRep_PlayerState()

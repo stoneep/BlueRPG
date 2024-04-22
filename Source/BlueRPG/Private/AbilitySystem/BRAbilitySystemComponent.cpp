@@ -4,6 +4,7 @@
 #include "AbilitySystem/BRAbilitySystemComponent.h"
 
 #include "BRGameplayTags.h"
+#include "AbilitySystem/Abilities/BRGameplayAbility.h"
 
 void UBRAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -17,11 +18,44 @@ void UBRAbilitySystemComponent::AbilityActorInfoSet()
 
 void UBRAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
 {
-	for (TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		//GiveAbility(AbilitySpec);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		if (const UBRGameplayAbility* BRAbility = Cast<UBRGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(BRAbility->StartupInputTag);
+			GiveAbility(AbilitySpec);
+		}
+	}
+}
+
+void UBRAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec :GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if (!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void UBRAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec :GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);
+		}
 	}
 }
 

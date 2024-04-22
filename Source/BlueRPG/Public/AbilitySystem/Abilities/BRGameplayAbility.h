@@ -13,5 +13,8 @@ UCLASS()
 class BLUERPG_API UBRGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
-	
+
+public:
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	FGameplayTag StartupInputTag;
 };

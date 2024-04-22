@@ -2,13 +2,20 @@
 
 
 #include "Player/BRPlayerController.h"
-#include "EnhancedInputComponent.h"
+//#include "EnhancedInputComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "BRGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/BRAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
+#include "Input/BRInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
 ABRPlayerController::ABRPlayerController()
 {
 	bReplicates = true;
+
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void ABRPlayerController::PlayerTick(float DeltaTime)
@@ -43,9 +50,9 @@ void ABRPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABRPlayerController::Move);
+	UBRInputComponent* BRInputComponent = CastChecked<UBRInputComponent>(InputComponent);
+	BRInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABRPlayerController::Move);
+	BRInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void ABRPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -122,10 +129,65 @@ void ABRPlayerController::CursorTrace()
 			}
 		}
 	}
+}
 
+void ABRPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	if (InputTag.MatchesTagExact(FBRGameplayTags::Get().InputTag_LMB))
+	{
+		bTargeting = ThisActor ? true : false;
+		bAutoRunning = false;
+	}
+}
 
+void ABRPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if(GetASC() == nullptr) return;
+	GetASC()->AbilityInputTagReleased(InputTag);
+}
 
+void ABRPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	if (!InputTag.MatchesTagExact(FBRGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
 
+	if (bTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
 
-	
+		FHitResult Hit;
+		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if (APawn* ControlledPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+	}
+}
+
+UBRAbilitySystemComponent* ABRPlayerController::GetASC()
+{
+	if (BRAbilitySystemComponent == nullptr)
+	{
+		BRAbilitySystemComponent = Cast<UBRAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return BRAbilitySystemComponent;
 }

@@ -4,12 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "BRPlayerController.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class IEnemyInterface;
+class UBRInputConfig;
+class UBRAbilitySystemComponent;
+class USplineComponent;
 /**
  * 
  */
@@ -38,4 +42,29 @@ private:
 	void CursorTrace();
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UBRInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UBRAbilitySystemComponent> BRAbilitySystemComponent;
+
+	UBRAbilitySystemComponent* GetASC();
+
+	
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.f;
+	bool bAutoRunning = false;
+	bool bTargeting = false;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float AutoAcceptanceRadius = 50.f;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
 };

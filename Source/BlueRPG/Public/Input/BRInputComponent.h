@@ -33,13 +33,15 @@ void UBRInputComponent::BindAbilityActions(const UBRInputConfig* InputConfig, Us
 			{
 				BindAction(Action.InputAction, ETriggerEvent::Started, Object, PressedFunc, Action.InputTag);
 			}
+
 			if (ReleasedFunc)
 			{
 				BindAction(Action.InputAction, ETriggerEvent::Completed, Object, ReleasedFunc, Action.InputTag);
 			}
+
 			if (HeldFunc)
 			{
-				BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, HeldFunc, Action.InputAction);
+				BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, HeldFunc, Action.InputTag);
 			}
 		}
 	}

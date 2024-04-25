@@ -4,18 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/ListViewBase.h"
 #include "BRUserWidget.generated.h"
 
+class UserWidgetPool;
+class UListView;
 /**
  * 
  */
 UCLASS()
-class BLUERPG_API UBRUserWidget : public UUserWidget
+class BLUERPG_API UBRUserWidget : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
 
 public:
 
+	UFUNCTION(BlueprintCallable, Category = "BRListViewBase")
+	void RegenerateAllEntries();
+	
+	UPROPERTY(Transient)
+	FUserWidgetPool EntryWidgetPool;
+
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+	
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetController(UObject* InWidgetController);
 	

@@ -6,7 +6,9 @@
 #include "Blueprint/UserWidget.h"
 //#include "Components/ListViewBase.h"
 #include "BRUserWidget.generated.h"
-#include ""
+
+class UGameInstance;
+class UObject;
 //class UserWidgetPool;
 //class UListView;
 /**
@@ -18,7 +20,9 @@ class BLUERPG_API UBRUserWidget : public UUserWidget // public IUserObjectListEn
 	GENERATED_BODY()
 
 public:
-
+	
+	//void UBRUserWidget(const FObjectInitializer& ObjectInitializer);
+	
 	// UFUNCTION(BlueprintCallable, Category = "BRListViewBase")
 	// void RegenerateAllEntries();
 	//
@@ -33,6 +37,10 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject> WidgetController;
 
+private:
+	
+
+	
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void WidgetControllerSet();

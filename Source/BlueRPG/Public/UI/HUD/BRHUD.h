@@ -35,12 +35,16 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UBRUserWidget> OverlayWidgetClass;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UBRUserWidget> MainLobbyWidgetClass;
+	
 	UPROPERTY()
 	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 
+	
 	UPROPERTY()
 	TObjectPtr<UAttributeMenuWidgetController> AttributeMenuWidgetController;
 	
